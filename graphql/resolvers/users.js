@@ -16,21 +16,19 @@ module.exports = {
         }
     },
     Mutation: {
-        async register(_, { registerInput: {username, password, email, confirmPassword} }) {
-
+        async register(_, { registerInput: { username, password, email, confirmPassword, last } }) {
+            console.log(last);
             // Check if user with email and username exists 
-            const user = User.findOne({ username })
-            const em = User.findOne({ email })
+            const user = await User.findOne({ username });
+            
+            if(user){
+                throw new UserInputError('User with entered username exist!', {
+                    errors:{
+                        username: 'This username is taken.'
+                    }
+                });
+            }
 
-            // console.log(user);
-
-            // if(user){
-            //     throw new UserInputError('User with entered username exist!', {
-            //         errors:{
-            //             username: 'This username is taken.'
-            //         }
-            //     })
-            // }
             // Hash password
             password = await bcrypt.hash(password, 12);
 
@@ -55,7 +53,8 @@ module.exports = {
             return {
                 ...res._doc,
                 id: res._id,
-                token
+                token,
+                test:"testing server"
             }
         }
     }

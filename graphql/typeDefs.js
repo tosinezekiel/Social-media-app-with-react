@@ -11,6 +11,7 @@ module.exports = gql`
     type Users{
         id: ID!
         username: String!
+        password:String!
         email: String!
         createdAt: String!
     }
@@ -26,6 +27,7 @@ module.exports = gql`
         password: String!
         confirmPassword: String!
         email: String!
+        last:String!
     }
     type Query {
         getPosts: [Post],
